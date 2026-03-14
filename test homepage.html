@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Growth up</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --yc-orange: #FF6600;
+    --dark: #111010;
+    --mid: #1a1919;
+    --light-gray: #f5f4f2;
+    --text: #1a1919;
+    --muted: #888;
+    --border: #e8e6e1;
+  }
+
+  body {
+    font-family: 'Crimson Pro', Georgia, serif;
+    background: var(--light-gray);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  nav {
+    background: var(--yc-orange);
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    height: 44px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  nav .logo {
+    width: 18px;
+    height: 18px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-weight: 500;
+    font-size: 11px;
+    color: var(--yc-orange);
+    flex-shrink: 0;
+    text-decoration: none;
+  }
+
+  nav a {
+    color: #000;
+    text-decoration: none;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    opacity: 0.8;
+    transition: opacity 0.15s;
+  }
+  nav a:hover { opacity: 1; }
+  nav .nav-brand {
+    font-weight: 500;
+    font-size: 13px;
+    color: #000;
+    text-decoration: none;
+    font-family: 'DM Mono', monospace;
+  }
+  nav .spacer { flex: 1; }
+  nav .nav-right { display: flex; gap: 1.2rem; align-items: center; }
+
+  /* HERO */
+  .hero {
+    background: var(--dark);
+    color: #fff;
+    padding: 6rem 2rem 5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 50% at 50% 100%, rgba(255,102,0,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255,102,0,0.15);
+    border: 1px solid rgba(255,102,0,0.3);
+    border-radius: 2rem;
+    padding: 0.35rem 1rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--yc-orange);
+    margin-bottom: 2rem;
+    letter-spacing: 0.02em;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    max-width: 800px;
+    margin: 0 auto 1.5rem;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--yc-orange);
+  }
+
+  .hero p {
+    font-size: 1.3rem;
+    font-weight: 300;
+    color: rgba(255,255,255,0.6);
+    max-width: 540px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.6;
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: var(--yc-orange);
+    color: #fff;
+    border: none;
+    padding: 0.85rem 2rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: opacity 0.15s;
+    letter-spacing: 0.02em;
+  }
+  .btn-primary:hover { opacity: 0.88; }
+
+  .btn-ghost {
+    background: transparent;
+    color: rgba(255,255,255,0.7);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 0.85rem 2rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.15s;
+    letter-spacing: 0.02em;
+  }
+  .btn-ghost:hover { border-color: rgba(255,255,255,0.5); color: #fff; }
+
+  /* STATS */
+  .stats {
+    background: var(--mid);
+    border-top: 1px solid #2a2929;
+    border-bottom: 1px solid #2a2929;
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 4rem;
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    text-align: center;
+    color: #fff;
+  }
+
+  .stat-number {
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: var(--yc-orange);
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    margin-top: 0.4rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* MAIN CONTENT */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  /* COMPANIES */
+  .section {
+    padding: 5rem 0;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 3rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1rem;
+  }
+
+  .section-title {
+    font-size: 2rem;
+    font-weight: 300;
+    letter-spacing: -0.02em;
+  }
+
+  .section-link {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--yc-orange);
+    text-decoration: none;
+    letter-spacing: 0.03em;
+  }
+  .section-link:hover { text-decoration: underline; }
+
+  /* Company Grid */
+  .companies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .company-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+  .company-card:hover {
+    border-color: var(--yc-orange);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  }
+
+  .company-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .company-logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-weight: 500;
+    font-size: 14px;
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  .company-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+
+  .company-batch {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    background: var(--light-gray);
+    padding: 0.1rem 0.4rem;
+  }
+
+  .company-desc {
+    font-size: 0.95rem;
+    color: #555;
+    line-height: 1.55;
+  }
+
+  .company-tags {
+    display: flex;
+    gap: 0.4rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 0.2rem 0.5rem;
+    background: var(--light-gray);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    letter-spacing: 0.03em;
+  }
+
+  /* APPLY SECTION */
+  .apply-section {
+    background: var(--dark);
+    color: #fff;
+    padding: 6rem 2rem;
+    text-align: center;
+  }
+
+  .apply-section h2 {
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .apply-section p {
+    color: rgba(255,255,255,0.5);
+    font-size: 1.1rem;
+    max-width: 480px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.6;
+  }
+
+  .apply-deadline {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--yc-orange);
+    margin-top: 1.5rem;
+  }
+
+  /* PROGRAMS */
+  .programs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .program-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    padding: 2rem;
+  }
+
+  .program-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--yc-orange);
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .program-icon svg {
+    width: 24px;
+    height: 24px;
+    fill: none;
+    stroke: #fff;
+    stroke-width: 1.5;
+  }
+
+  .program-card h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .program-card p {
+    font-size: 0.92rem;
+    color: #666;
+    line-height: 1.6;
+  }
+
+  /* NEWS / YC NEWS STYLE */
+  .news-list {
+    border-top: 1px solid var(--border);
+  }
+
+  .news-item {
+    display: flex;
+    gap: 1rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--border);
+    align-items: baseline;
+  }
+
+  .news-rank {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    min-width: 1.5rem;
+    text-align: right;
+  }
+
+  .news-title a {
+    font-size: 1rem;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .news-title a:hover { color: var(--yc-orange); }
+
+  .news-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 0.2rem;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--dark);
+    color: rgba(255,255,255,0.4);
+    padding: 3rem 2rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+  }
+
+  .footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr repeat(3, auto);
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .footer-logo {
+    width: 22px;
+    height: 22px;
+    background: var(--yc-orange);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .footer-brand-name { color: #fff; font-size: 13px; }
+
+  .footer-col h4 {
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 1rem;
+    letter-spacing: 0.08em;
+    font-size: 11px;
+    text-transform: uppercase;
+  }
+
+  .footer-col a {
+    display: block;
+    color: rgba(255,255,255,0.35);
+    text-decoration: none;
+    margin-bottom: 0.5rem;
+    transition: color 0.15s;
+    font-size: 12px;
+  }
+  .footer-col a:hover { color: rgba(255,255,255,0.7); }
+
+  .footer-bottom {
+    max-width: 1100px;
+    margin: 2rem auto 0;
+    padding-top: 1.5rem;
+    border-top: 1px solid #2a2929;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  @media (max-width: 600px) {
+    .footer-inner { grid-template-columns: 1fr; }
+    .stats { gap: 2rem; }
+    .hero h1 { font-size: 2.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">G</a>
+  <a href="#" class="nav-brand">Growth up</a>
+  <div class="spacer"></div>
+  <div class="nav-right">
+    <a href="#">Companies</a>
+    <a href="#">Programs</a>
+    <a href="#">Library</a>
+    <a href="#">Jobs</a>
+    <a href="#">News</a>
+    <a href="#" class="btn-primary" style="padding: 0.4rem 1rem; font-size: 12px;">Apply</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">
+    <span>●</span> Now accepting applications — Career Development 2026
+  </div>
+  <h1>The world's best <em>Skill & career</em> program</h1>
+  <p>We invest in a large number of skill & career twice a year. Here's what we offer and why you should apply.</p>
+  <div class="hero-ctas">
+    <a href="#" class="btn-primary">Apply to Growth up</a>
+    <a href="#" class="btn-ghost">Learn More</a>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat">
+    <div class="stat-number">4,000+</div>
+    <div class="stat-label">Funded Companies</div>
+  </div>
+  <div class="stat">
+    <div class="stat-number">$600</div>
+    <div class="stat-label">Combined Valuation</div>
+  </div>
+  <div class="stat">
+    <div class="stat-number">$500K</div>
+    <div class="stat-label">Standard Deal</div>
+  </div>
+  <div class="stat">
+    <div class="stat-number">1 week</div>
+    <div class="stat-label">Batch Duration</div>
+  </div>
+</div>
+
+<!-- COMPANIES -->
+<div class="container">
+  <div class="section">
+    <div class="section-header">
+      <h2 class="section-title">Top Companies</h2>
+      <a href="#" class="section-link">View all companies →</a>
+    </div>
+    <div class="companies-grid">
+
+      <a href="#" class="company-card">
+        <div class="company-header">
+          <div class="company-logo" style="background:#E31C30;">S</div>
+          <div>
+            <div class="company-name">Stripe</div>
+            <span class="company-batch">S09</span>
+          </div>
+        </div>
+        <p class="company-desc">Financial infrastructure platform for the internet. Businesses of every size use Stripe's software to accept payments.</p>
+        <div class="company-tags">
+          <span class="tag">Fintech</span>
+          <span class="tag">B2B</span>
+          <span class="tag">Payments</span>
+        </div>
+      </a>
+
+      <a href="#" class="company-card">
+        <div class="company-header">
+          <div class="company-logo" style="background:#FF5A5F;">A</div>
+          <div>
+            <div class="company-name">Airbnb</div>
+            <span class="company-batch">W09</span>
+          </div>
+        </div>
+        <p class="company-desc">Online marketplace for lodging and tourism experiences. Hosts provide accommodations, experiences, and services.</p>
+        <div class="company-tags">
+          <span class="tag">Marketplace</span>
+          <span class="tag">Travel</span>
+          <span class="tag">Consumer</span>
+        </div>
+      </a>
+
+      <a href="#" class="company-card">
+        <div class="company-header">
+          <div class="company-logo" style="background:#000;">O</div>
+          <div>
+            <div class="company-name">OpenAI</div>
+            <span class="company-batch">S15</span>
+          </div>
+        </div>
+        <p class="company-desc">AI research and deployment company. OpenAI's mission is to ensure that artificial general intelligence benefits all of humanity.</p>
+        <div class="company-tags">
+          <span class="tag">AI</span>
+          <span class="tag">Research</span>
+          <span class="tag">Developer Tools</span>
+        </div>
+      </a>
+
+      <a href="#" class="company-card">
+        <div class="company-header">
+          <div class="company-logo" style="background:#5865F2;">D</div>
+          <div>
+            <div class="company-name">Discord</div>
+            <span class="company-batch">S15</span>
+          </div>
+        </div>
+        <p class="company-desc">Instant messaging and VoIP social platform for communities. Users communicate via voice calls, video calls, and text messaging.</p>
+        <div class="company-tags">
+          <span class="tag">Social</span>
+          <span class="tag">Gaming</span>
+          <span class="tag">Consumer</span>
+        </div>
+      </a>
+
+      <a href="#" class="company-card">
+        <div class="company-header">
+          <div class="company-logo" style="background:#0F9D58;">C</div>
+          <div>
+            <div class="company-name">Coinbase</div>
+            <span class="company-batch">S12</span>
+          </div>
+        </div>
+        <p class="company-desc">Digital currency exchange and crypto ecosystem. Provides a platform for buying, selling, and managing cryptocurrency.</p>
+        <div class="company-tags">
+          <span class="tag">Crypto</span>
+          <span class="tag">Fintech</span>
+          <span class="tag">Exchange</span>
+        </div>
+      </a>
+
+      <a href="#" class="company-card">
+        <div class="company-header">
+          <div class="company-logo" style="background:#FF6600;">D</div>
+          <div>
+            <div class="company-name">DoorDash</div>
+            <span class="company-batch">S13</span>
+          </div>
+        </div>
+        <p class="company-desc">Food delivery platform connecting consumers with local and national restaurants via an on-demand delivery marketplace.</p>
+        <div class="company-tags">
+          <span class="tag">Marketplace</span>
+          <span class="tag">Food</span>
+          <span class="tag">Logistics</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- PROGRAMS -->
+  <div class="section" style="padding-top: 0;">
+    <div class="section-header">
+      <h2 class="section-title">Our Programs</h2>
+      <a href="#" class="section-link">Learn more →</a>
+    </div>
+    <div class="programs-grid">
+      <div class="program-card">
+        <div class="program-icon">
+          <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/></svg>
+        </div>
+        <h3>College student career program</h3>
+        <p>Growth up College Career Program helps students become job-ready through AI-powered learning, real-world projects, internship guidance, and career mentorship.
+We focus on skill development, industry exposure, and placement preparation so students can confidently enter the job market.</p>
+      </div>
+      <div class="program-card">
+        <div class="program-icon">
+          <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582"/></svg>
+        </div>
+        <h3>Career Boatcamps</h3>
+        <p>Intensive, practical, and industry-focused bootcamps designed to build high-demand skills in a short time.
+Students learn through:
+Live projects, 
+Hands-on assignments, 
+Mentor support, 
+Career roadmap planning, 
+From beginner to job-ready — fast and structured.</p>
+      </div>
+      <div class="program-card">
+        <div class="program-icon">
+          <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5"/></svg>
+        </div>
+        <h3>Skill Certification program</h3>
+        <p>Our certification programs validate real skills, not just theory.
+Students complete practical tasks and receive industry-relevant certification to strengthen their CV and LinkedIn profile.
+Perfect for:
+Internship seekers, 
+Freelancers, 
+Job applicants, </p>
+      </div>
+      <div class="program-card">
+        <div class="program-icon">
+          <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0M12 12.75h.008v.008H12v-.008z"/></svg>
+        </div>
+        <h3>Work at a Startup</h3>
+        <p>Job board exclusively for Growth up-backed companies. Find roles at the fastest-growing startups in the world at every stage.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEWS -->
+  <div class="section" style="padding-top: 0;">
+    <div class="section-header">
+      <h2 class="section-title">Career News</h2>
+      <a href="#" class="section-link">news.Growthup.com →</a>
+    </div>
+    <div class="news-list">
+      <div class="news-item">
+        <span class="news-rank">1.</span>
+        <div>
+          <div class="news-title"><a href="#">New workforce Hub to connect Residents with Jobs</a></div>
+          <div class="news-meta">342 points · 4 hours ago · 218 comments</div>
+        </div>
+      </div>
+      <div class="news-item">
+        <span class="news-rank">2.</span>
+        <div>
+          <div class="news-title"><a href="#">University opens ESports Arena to Support Tech Career</a></div>
+          <div class="news-meta">289 points · 6 hours ago · 412 comments</div>
+        </div>
+      </div>
+      <div class="news-item">
+        <span class="news-rank">3.</span>
+        <div>
+          <div class="news-title"><a href="#">Expanded Nursing Degree program Empowers Career path</a></div>
+          <div class="news-meta">201 points · 8 hours ago · 97 comments</div>
+        </div>
+      </div>
+      <div class="news-item">
+        <span class="news-rank">4.</span>
+        <div>
+          <div class="news-title"><a href="#">Career Trip program for professional Development</a></div>
+          <div class="news-meta">178 points · 9 hours ago · 134 comments</div>
+        </div>
+      </div>
+      <div class="news-item">
+        <span class="news-rank">5.</span>
+        <div>
+          <div class="news-title"><a href="#">space Industry Training Expands Job pipeline</a></div>
+          <div class="news-meta">156 points · 12 hours ago · 76 comments</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- APPLY CTA -->
+<div class="apply-section">
+  <h2>Make a career and opportunity</h2>
+  <p>We look for Skill are building something that they genuinely believe will make the world better.</p>
+  <a href="#" class="btn-primary" style="font-size: 14px; padding: 1rem 2.5rem;">Apply to Growth up</a>
+  <div class="apply-deadline">
+    <span>◆</span> Application deadline: April 4, 2028
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">
+        <div class="footer-logo">G</div>
+        <span class="footer-brand-name">Growth up</span>
+      </div>
+      <p>Make a career and opportunity<br>since 2026.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Growth up</h4>
+      <a href="#">About</a>
+      <a href="#">FAQ</a>
+      <a href="#">Blog</a>
+      <a href="#">Apply</a>
+    </div>
+    <div class="footer-col">
+      <h4>Programs</h4>
+      <a href="#">Batch</a>
+      <a href="#">School partnership</a>
+      <a href="#">Career training</a>
+      <a href="#">Mentorship</a>
+    </div>
+    <div class="footer-col">
+      <h4>Resources</h4>
+      <a href="#">Library</a>
+      <a href="#">Career News</a>
+      <a href="#">skill & Career</a>
+      <a href="#">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Growth up. All rights reserved.</span>
+    <span>Privacy · Terms · Security</span>
+  </div>
+</footer>
+
+</body>
+</html>
